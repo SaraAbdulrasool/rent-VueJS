@@ -28,7 +28,7 @@
               cols="12"
               align="center"
               justify="center"
-              class="blue-grey--text text--darken-1 text-h3 pb-10"
+              class="blue-grey--text text--darken-1 text-xl-h2 text-lg-h3 text-md-h4 text-sm-h5 text-h6 pb-10"
             >
               List your property with us
               <v-icon large> mdi-check </v-icon>
@@ -45,7 +45,6 @@
               >
                 <v-stepper-header>
                   <v-stepper-step
-                    editable
                     color="white blue-grey--text"
                     :complete="e1 > 1"
                     step="1"
@@ -56,7 +55,6 @@
                   <v-divider></v-divider>
 
                   <v-stepper-step
-                    editable
                     color="white blue-grey--text"
                     :complete="e1 > 2"
                     step="2"
@@ -72,18 +70,21 @@
                     <v-card
                       class="pa-16 mb-10"
                       color="grey lighten-5"
-                      height="550px"
+                      max-height="820px"
                       flat
                     >
                       <v-row>
-                        <v-col cols="6">
+                        <!-- name -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
+                            clearable
                             prepend-icon="mdi-home"
                             v-model="pName"
                             label="name"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- type -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-select
                             v-model="pType"
                             :items="propertyType"
@@ -93,15 +94,19 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="6">
+                        <!-- size -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
+                            clearable
+                            suffix="ft"
                             v-model="pSize"
                             type="number"
                             label="Size"
                             prepend-icon="mdi-ruler-square"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- area -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-select
                             v-model="pArea"
                             :items="areas"
@@ -111,15 +116,19 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="6">
+                        <!-- price -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
+                            clearable
+                            prefix="BD"
                             v-model="pPrice"
                             type="number"
                             label="Price"
                             prepend-icon="mdi-cash-100"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- furnish -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-select
                             v-model="pFurniture"
                             :items="furniture"
@@ -129,15 +138,19 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="6">
+                        <!-- phone number -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
+                            clearable
+                            counter="8"
                             v-model="pPhoneNumber"
                             type="number"
                             label="Phone Number"
                             prepend-icon="mdi-cellphone"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- images  -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-file-input
                             v-model="pPics"
                             show-size
@@ -145,7 +158,6 @@
                             multiple
                             accept="image/*"
                             label="Upload property pictures"
-                            @change="getFileName"
                           ></v-file-input>
                         </v-col>
                       </v-row>
@@ -163,7 +175,8 @@
                       flat
                     >
                       <v-row>
-                        <v-col cols="6">
+                        <!-- balcony -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-select
                             v-model="pBalcony"
                             :items="balcony"
@@ -171,7 +184,8 @@
                             prepend-icon="mdi-window-closed-variant"
                           ></v-select>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- parking -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
                             v-model="pParking"
                             type="number"
@@ -181,7 +195,8 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="6">
+                        <!-- bedroom -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
                             v-model="pBedroom"
                             type="number"
@@ -189,7 +204,8 @@
                             prepend-icon="mdi-bed-king"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- living room -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
                             v-model="pLivingroom"
                             type="number"
@@ -199,7 +215,8 @@
                         </v-col>
                       </v-row>
                       <v-row>
-                        <v-col cols="6">
+                        <!-- bathroom -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
                             v-model="pBathroom"
                             type="number"
@@ -207,7 +224,8 @@
                             prepend-icon="mdi-toilet"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <!-- kitchen -->
+                        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
                           <v-text-field
                             v-model="pKitchen"
                             type="number"
@@ -217,6 +235,7 @@
                         </v-col>
                       </v-row>
                       <v-row>
+                        <!-- description -->
                         <v-col cols="12">
                           <v-textarea
                             v-model="pDescription"
@@ -227,7 +246,11 @@
                         </v-col>
                       </v-row>
                     </v-card>
-                    <v-btn class="white-text" @click="nextStepper">
+                    <v-btn
+                      :loading="loading"
+                      class="white-text"
+                      @click="submitProperty"
+                    >
                       Continue
                     </v-btn>
                   </v-stepper-content>
@@ -238,6 +261,7 @@
           </v-row>
         </v-container>
       </v-card>
+      <!-- fields value -->
       <v-snackbar v-model="snackbar">
         Please make sure to fill all the fields
         <template v-slot:action="{ attrs }">
@@ -251,13 +275,27 @@
           </v-btn>
         </template>
       </v-snackbar>
+      <!-- pass length -->
+      <v-snackbar v-model="passSnackbar">
+        Please make sure phone number length is equal to 8 numbers
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="blue-grey lighten-1"
+            text
+            v-bind="attrs"
+            @click="passSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-dialog>
     <!-- Snackbar section -->
   </div>
 </template>
 
 <script>
-import db from "../firebase/firebaseInit";
+import PropertyService from "../services/propertyService";
 export default {
   name: "NewPropertyPopup",
   data() {
@@ -270,6 +308,10 @@ export default {
       sound: true,
       widgets: false,
       snackbar: false,
+      passSnackbar: false,
+      loading: false,
+
+      // property variables
       pName: "",
       pType: "",
       pFurniture: "",
@@ -286,12 +328,12 @@ export default {
       pPics: [],
       pDescription: "",
       property: {},
-      propertyType: ["House", "Villa", "Apartment"],
+      propertyType: ["House", "Apartment", "Studio"],
       furniture: ["Semi-Furnished", "Furnished"],
       balcony: ["Available", "Not Available"],
       rules: {
         required: (value) => !!value || "Required.",
-        counter: (value) => value.length >= 10 || "Min 10 characters",
+        counter: (value) => value.length == 10 || "equal 8 characters",
       },
       areas: [
         "Manama",
@@ -325,23 +367,24 @@ export default {
   },
   methods: {
     addNewProperty() {
+      let user = JSON.parse(localStorage.user);
       this.property = {
-        propertyID: "12",
+        ownerID: user._id,
         name: this.pName,
-        desription: this.pDescription,
+        description: this.pDescription,
         type: this.pType,
         furnish: this.pFurniture,
-        bedroom: this.pBedroom,
-        livingroom: this.pLivingroom,
-        bathroom: this.pBathroom,
+        bedrooms: this.pBedroom,
+        livingrooms: this.pLivingroom,
+        bathrooms: this.pBathroom,
         kitchen: this.pKitchen,
         parking: this.pParking,
         balcony: this.pBalcony,
         size: this.pSize,
-        location: this.pArea,
+        area: this.pArea,
         price: this.pPrice,
-        ownerNumber: this.pPhoneNumber,
-        pictures: this.images,
+        ownerPhoneNumber: this.pPhoneNumber,
+        images: this.pPics,
       };
     },
     nextStepper() {
@@ -353,10 +396,14 @@ export default {
         this.pArea != "" &&
         this.pPrice != "" &&
         this.pPhoneNumber != "" &&
-        this.pPics != ""
+        this.pPics != "" &&
+        this.pPhoneNumber.length == 8
       ) {
         this.e1 = 2;
       } else {
+        if (this.pPhoneNumber.length != 8) {
+          this.passSnackbar = true;
+        }
         this.snackbar = true;
       }
     },
@@ -388,21 +435,32 @@ export default {
         this.pDescription != ""
       ) {
         this.addNewProperty(); // this method will assign all the data within the property variable
-        db.collection("properties").add(this.property);
-        //this.$store.commit("addProperty", this.property);
-        this.dialog = false;
-        this.clearTextFields();
-        this.e1 = 1;
+        return this.$store
+          .dispatch("uploads", this.property.images)
+          .then((result) => {
+            //this.loading = true;
+            //console.log(localStorage.user._id);
+            //console.log(result);
+            // PropertyService.addProperty(this.property)
+            //   .then(() => {
+            //     this.loading = false;
+            //     this.dialog = false;
+            //     this.clearTextFields();
+            //     this.e1 = 1;
+            //   })
+            //   .catch((err) => console.log(err.message));
+          })
+          .catch((err) => console.log(err));
       } else {
         this.snackbar = true;
       }
     },
-    getFileName(e) {
-      while (this.x < e.length) {
-        this.images[this.x] = URL.createObjectURL(e[this.x]);
-        this.x++;
-      }
-    },
+    // getFileName(e) {
+    //   while (this.x < e.length) {
+    //     this.images[this.x] = URL.createObjectURL(e[this.x]);
+    //     this.x++;
+    //   }
+    // },
   },
 };
 </script>

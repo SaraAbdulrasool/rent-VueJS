@@ -20,13 +20,20 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <!-- Edit Property Section -->
-            <v-btn dark text @click="saveEditedProperty" :disabled="!change">
+            <v-btn
+              dark
+              text
+              :loading="loading"
+              @click="saveEditedProperty(), (dialog.value = dialogStatus)"
+              :disabled="!change"
+            >
               Save
             </v-btn>
             <v-btn dark text @click="dialog.value = false"> Cancel </v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
+          <!-- property info -->
           <v-container>
             <v-row>
               <!-- property name -->
@@ -54,7 +61,6 @@
               <v-col cols="6">
                 <v-text-field
                   v-model="propertyDetails.size"
-                  type="number"
                   label="Size"
                   prepend-icon="mdi-ruler-square"
                   @change="change = true"
@@ -63,7 +69,7 @@
               <!-- property location -->
               <v-col cols="6">
                 <v-select
-                  v-model="propertyDetails.location"
+                  v-model="propertyDetails.area"
                   :items="areas"
                   label="Area"
                   prepend-icon="mdi-map-marker"
@@ -97,7 +103,7 @@
               <!-- owner number -->
               <v-col cols="6">
                 <v-text-field
-                  v-model="propertyDetails.phone"
+                  v-model="propertyDetails.ownerPhoneNumber"
                   type="number"
                   label="Phone Number"
                   prepend-icon="mdi-cellphone"
@@ -114,7 +120,7 @@
                   accept="image/*"
                   label="Upload property pictures"
                   @change="
-                    getFileName;
+                    getFileName();
                     change = true;
                   "
                 ></v-file-input>
@@ -146,7 +152,7 @@
               <!-- property bedroom -->
               <v-col cols="6">
                 <v-text-field
-                  v-model="propertyDetails.bedroom"
+                  v-model="propertyDetails.bedrooms"
                   type="number"
                   label="Bedroom"
                   prepend-icon="mdi-bed-king"
@@ -156,7 +162,7 @@
               <!-- property livingroom -->
               <v-col cols="6">
                 <v-text-field
-                  v-model="propertyDetails.livingroom"
+                  v-model="propertyDetails.livingrooms"
                   type="number"
                   label="Livingroom"
                   prepend-icon="mdi-sofa"
@@ -168,7 +174,7 @@
               <!-- property bathroom -->
               <v-col cols="6">
                 <v-text-field
-                  v-model="propertyDetails.bathroom"
+                  v-model="propertyDetails.bathrooms"
                   type="number"
                   label="Bathroom"
                   prepend-icon="mdi-toilet"
@@ -202,7 +208,7 @@
         </v-card-text>
       </v-card>
       <!-- snackbar value saved -->
-      <v-snackbar timeout="2000" v-model="snackbarValueSaved">
+      <v-snackbar timeout="3000" v-model="snackbarValueSaved">
         Your changes saved successfully
         <template v-slot:action="{ attrs }">
           <v-btn
@@ -215,19 +221,36 @@
           </v-btn>
         </template>
       </v-snackbar>
+      <!-- snackbar phone number value -->
+      <v-snackbar timeout="3000" v-model="phoneSnackbar">
+        Phone number length must be equal to eight numbers
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="blue-grey lighten-3"
+            text
+            v-bind="attrs"
+            @click="phoneSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </template>
   </v-dialog>
 </template>
 
 <script>
-import db from "../firebase/firebaseInit";
+import PropertyService from "../services/propertyService";
 export default {
   name: "EditProperty",
   data() {
     return {
+      loading: false,
       close: false,
       snackbarValueSaved: false,
+      phoneSnackbar: false,
       change: false,
+      dialogStatus: true,
       propertyType: ["House", "Villa", "Apartment"],
       furniture: ["Semi-Furnished", "Furnished"],
       balcony: ["Available", "Not Available"],
@@ -270,28 +293,44 @@ export default {
         x++;
       }
     },
-    saveEditedProperty() {
-      if (this.change == true) {
-        db.collection("properties").doc(this.propertyDetails.id).update({
-          name: this.propertyDetails.name,
-          description: this.propertyDetails.description,
-          type: this.propertyDetails.type,
-          bedroom: this.propertyDetails.bedroom,
-          livingroom: this.propertyDetails.livingroom,
-          bathroom: this.propertyDetails.bathroom,
-          kitchen: this.propertyDetails.kitchen,
-          parking: this.propertyDetails.parking,
-          balcony: this.propertyDetails.balcony,
-          size: this.propertyDetails.size,
-          location: this.propertyDetails.location,
-          price: this.propertyDetails.price,
-          ownerNumber: this.propertyDetails.ownerNumber,
-          pictures: this.propertyDetails.pictures,
-        });
-        this.change = false;
-        this.snackbarValueSaved = true;
+    async saveEditedProperty() {
+      if (
+        this.change == true &&
+        this.propertyDetails.ownerPhoneNumber.length == 8
+      ) {
+        try {
+          this.loading = true;
+          await PropertyService.updateProperty({
+            id: this.propertyDetails.id,
+            ownerID: this.propertyDetails.ownerID,
+            name: this.propertyDetails.name,
+            description: this.propertyDetails.description,
+            type: this.propertyDetails.type,
+            bedrooms: this.propertyDetails.bedrooms,
+            livingrooms: this.propertyDetails.livingrooms,
+            bathrooms: this.propertyDetails.bathrooms,
+            kitchen: this.propertyDetails.kitchen,
+            parking: this.propertyDetails.parking,
+            balcony: this.propertyDetails.balcony,
+            size: this.propertyDetails.size,
+            area: this.propertyDetails.area,
+            price: this.propertyDetails.price,
+            ownerPhoneNumber: this.propertyDetails.ownerPhoneNumber,
+            images: this.propertyDetails.images,
+          });
+          this.loading = false;
+          this.$emit("loadData", true);
+          this.change = false;
+          this.snackbarValueSaved = true;
+          this.dialogStatus = false;
+        } catch (err) {
+          console.log(err.message);
+        }
+      } else {
+        this.phoneSnackbar = true;
       }
     },
   },
+  $emit: ["loadData"],
 };
 </script>

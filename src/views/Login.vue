@@ -1,238 +1,238 @@
 <template>
   <v-container fluid class="pa-10 blue-grey lighten-5">
-    <v-row class="pa-16" align="center" justify="center">
-      <v-col sm="12" md="4" lg="4" cols="12">
-        <v-row>
-          <v-col
-            cols="12"
-            align="center"
-            justify="center"
-            class="
-              text-lg-h1
-              text-md-h2
-              text-sm-h2
-              text-h3
-              font-weight-medium
-              blue-grey--text
-              text--blue-grey text--darken-1
-              pb-10
-            "
-          >
-            RENT A PROPERTY
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            align="center"
-            justify="center"
-            class="text-h5 font-weight-thin grey--text text--darken-1 pb-16"
-          >
-            MULTIPLE UNIQUE OPTIONS FOR ALL TYPE OF PROPERTIES
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" align="center" justify="center">
-            <!-- login in dialog -->
-            <v-dialog transition="dialog-bottom-transition" max-width="800">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  class="blue-grey darken-3 white--text"
-                  depressed
-                  rounded
-                  large
-                  width="150"
-                  v-bind="attrs"
-                  v-on="on"
-                  >LOGIN</v-btn
-                >
-              </template>
-              <template v-slot:default="dialog">
-                <v-card align="center" justify="center">
-                  <v-toolbar flat color="blue-grey lighten-1" dark
-                    >LOGIN</v-toolbar
-                  >
-                  <v-card-text>
-                    <div class="text-lg-h4 text-md-h4 text-sm-h4 text-h6 pt-12">WELCOM BACK AGAIN!</div>
-                    <div class="text-h6 blue-grey--text font-weight-thin">
-                      Enter your email and password
-                    </div>
-                  </v-card-text>
-                  <v-container fluid>
-                    <v-row align="center" justify="center">
-                      <v-col lg="8" md="8" sm="7" cols="10">
-                        <v-text-field
-                          label="Email"
-                          outlined
-                          append-icon="mdi-account"
-                          v-model="mail"
-                        ></v-text-field>
-                        <v-text-field
-                          label="Password"
-                          outlined
-                          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show ? 'text' : 'password'"
-                          hint="At least 8 characters"
-                          @click:append="show = !show"
-                          counter
-                          v-model="password"
-                        ></v-text-field>
-                        <div v-if="$store.state.errorMessage" class="red--text">
-                          The username or password you entered is inncorrect.
-                          please try again.
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <v-card-actions class="justify-end">
-                    <v-btn text to="/Home" @click="login">Login</v-btn>
-                    <v-btn
-                      text
-                      @click="
-                        $store.state.errorMessage = false;
-                        dialog.value = false;
-                      "
-                      >Close</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-        </v-row>
-        <v-row>
-          <!-- Register dialog -->
-          <v-col cols="12" align="center" justify="center">
-            <v-dialog transition="dialog-bottom-transition" max-width="800">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  class="blue-grey darken-3 white--text"
-                  depressed
-                  rounded
-                  large
-                  width="150"
-                  v-bind="attrs"
-                  v-on="on"
-                  >SIGN UP</v-btn
-                >
-              </template>
-              <template v-slot:default="dialog">
-                <v-card align="center" justify="center">
-                  <v-toolbar flat color="blue-grey lighten-1" dark
-                    >SIGN UP</v-toolbar
-                  >
-                  <v-card-text>
-                    <div class="text-lg-h4 text-md-h4 text-sm-h5 text-h6 pt-12">CREATE YOUR RENTAL ACCOUNT</div>
-                    <div class="text-h6 blue-grey--text font-weight-thin">
-                      Please fill all the below fields to start
-                    </div>
-                  </v-card-text>
-                  <v-container fluid>
-                    <v-row align="center" justify="center">
-                      <v-col lg="7" md="7" sm="7" cols="10">
-                        <!-- First name textfield -->
-                        <v-text-field
-                          label="First Name"
-                          outlined
-                          append-icon="mdi-account"
-                          v-model="fName"
-                          color="blue-grey"
-                        ></v-text-field>
-                        <!-- Last name textfield -->
-                        <v-text-field
-                          label="Last Name"
-                          outlined
-                          append-icon="mdi-account"
-                          v-model="lName"
-                          color="blue-grey"
-                        ></v-text-field>
-                        <!-- Password textfield -->
-                        <v-text-field
-                          label="Password"
-                          outlined
-                          type="number"
-                          append-icon="mdi-lock"
-                          v-model="pass"
-                          color="blue-grey"
-                        ></v-text-field>
-                        <!-- Phone number textfield -->
-                        <v-text-field
-                          label="Phone Number"
-                          outlined
-                          type="number"
-                          append-icon="mdi-cellphone"
-                          v-model="phoneNumber"
-                          color="blue-grey"
-                        ></v-text-field>
-                        <!-- Birth date textfield -->
-                        <v-menu
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                              outlined
-                              v-model="birthDate"
-                              label="Birth Date"
-                              append-icon="mdi-calendar"
-                              color="blue-grey"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            color="blue-grey"
-                            v-model="birthDate"
-                            @input="menu2 = false"
-                          ></v-date-picker>
-                        </v-menu>
-                        <!-- Email textfield -->
-                        <v-text-field
-                          label="E-mail"
-                          outlined
-                          append-icon="mdi-email"
-                          v-model="email"
-                          color="blue-grey"
-                        ></v-text-field>
-                        <v-text-field
-                          label="Address"
-                          outlined
-                          append-icon="mdi-map-marker"
-                          v-model="address"
-                          color="blue-grey"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <div class="red--text" v-if="$store.state.errorMessage">
-                      This e-mail is already exists.
-                    </div>
-                  </v-container>
-                  <v-card-actions class="justify-end">
-                    <v-btn text to="/Home" @click="createNewUser()"
-                      >Submit</v-btn
-                    >
-                    <v-btn
-                      text
-                      @click="
-                        clearTextFields;
-                        $store.state.errorMessage = false;
-                        dialog.value = false;
-                      "
-                      >Close</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-        </v-row>
+    <!-- First column -->
+    <v-row class="pa-5" align="center" justify="center">
+      <v-col
+        sm="12"
+        md="12"
+        lg="6"
+        cols="12"
+        align="center"
+        justify="center"
+        class="pt-10"
+      >
+        <div class="pa-5">
+          <div class="primary--text text-h3 pb-5">Rent a property</div>
+          <div class="grey--text text--darken-3 font-weight-thin text-h6 pb-5">
+            Sign in or create an account
+          </div>
+        </div>
+        <v-img max-height="600" max-width="900" src="/login.png"></v-img>
       </v-col>
-      <v-col sm="12" md="8" lg="8" cols="12" align="center" justify="center" class="pt-10">
-        <v-img max-width="1000" src="/housedealer.png"></v-img>
+      <!-- Second column -->
+      <v-col sm="12" md="12" lg="6" cols="12">
+        <!-- Login part -->
+        <v-row>
+          <v-col cols="12" align="center" justify="center">
+            <!-- login card -->
+            <v-card
+              v-if="!$store.state.signUp"
+              flat
+              align="center"
+              justify="center"
+            >
+              <v-card-text>
+                <div
+                  class="primary--text text-lg-h4 text-md-h4 text-sm-h4 text-h6 pt-12"
+                >
+                  WELCOM BACK AGAIN!
+                </div>
+                <div class="text-h6 primary--text font-weight-thin">
+                  Enter your email and password
+                </div>
+              </v-card-text>
+              <v-container fluid>
+                <v-row align="center" justify="center">
+                  <v-col lg="8" md="8" sm="7" cols="10">
+                    <v-text-field
+                      label="Email"
+                      outlined
+                      append-icon="mdi-account"
+                      v-model="mail"
+                    ></v-text-field>
+                    <v-text-field
+                      label="Password"
+                      outlined
+                      :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show ? 'text' : 'password'"
+                      hint="At least 8 characters"
+                      @click:append="show = !show"
+                      counter
+                      v-model="password"
+                    ></v-text-field>
+                    <div
+                      v-if="$store.state.errorMessage"
+                      class="red--text pb-4"
+                    >
+                      {{ $store.state.errorMessage }}
+                    </div>
+                    <div>
+                      New user?
+                      <v-btn
+                        depressed
+                        plain
+                        color="white"
+                        class="primary--text font-weight-medium"
+                        @click="
+                          $store.state.signUp = true;
+                          $store.state.errorMessage = '';
+                        "
+                        >Create an account</v-btn
+                      >
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-card-actions class="justify-end">
+                <v-btn
+                  text
+                  to="/User-Homepage"
+                  @click="login"
+                  :loading="loading"
+                  >Login</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+        <!-- Sign up card -->
+        <v-row>
+          <v-col md="12" cols="12" align="center" justify="center">
+            <v-card
+              v-if="$store.state.signUp"
+              flat
+              align="center"
+              justify="center"
+            >
+              <v-card-text>
+                <div
+                  class="primary--text text-xl-h4 text-lg-h4 text-md-h5 text-sm-h5 text-h6 pt-12"
+                >
+                  CREATE YOUR RENTAL ACCOUNT
+                </div>
+                <div class="text-h6 blue-grey--text font-weight-thin">
+                  Please fill all the below fields to start
+                </div>
+              </v-card-text>
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-col xl="9" lg="9" md="7" sm="7" cols="12">
+                    <!-- First name textfield -->
+                    <v-text-field
+                      label="First Name"
+                      outlined
+                      append-icon="mdi-account"
+                      v-model="fName"
+                      color="blue-grey"
+                    ></v-text-field>
+                    <!-- Last name textfield -->
+                    <v-text-field
+                      label="Last Name"
+                      outlined
+                      append-icon="mdi-account"
+                      v-model="lName"
+                      color="blue-grey"
+                    ></v-text-field>
+                    <!-- Email textfield -->
+                    <v-text-field
+                      label="E-mail"
+                      outlined
+                      append-icon="mdi-email"
+                      v-model="email"
+                      color="blue-grey"
+                    ></v-text-field>
+                    <!-- Password textfield -->
+                    <v-text-field
+                      label="Password"
+                      outlined
+                      append-icon="mdi-lock"
+                      v-model="pass"
+                      color="blue-grey"
+                      :type="show ? 'text' : 'password'"
+                      @click:append="show = !show"
+                      counter
+                    ></v-text-field>
+                    <!-- Phone number textfield -->
+                    <v-text-field
+                      label="Phone Number"
+                      outlined
+                      type="number"
+                      append-icon="mdi-cellphone"
+                      v-model="phoneNumber"
+                      color="blue-grey"
+                    ></v-text-field>
+                    <!-- Birth date textfield -->
+                    <v-menu
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          outlined
+                          v-model="birthDate"
+                          label="Birth Date"
+                          append-icon="mdi-calendar"
+                          color="blue-grey"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        color="blue-grey"
+                        v-model="birthDate"
+                        @input="menu2 = false"
+                      ></v-date-picker>
+                    </v-menu>
+                    <!-- Address -->
+                    <v-text-field
+                      label="Address"
+                      outlined
+                      append-icon="mdi-map-marker"
+                      v-model="address"
+                      color="blue-grey"
+                    ></v-text-field>
+                    <v-select
+                      :items="['Customer', 'Property owner']"
+                      label="User type"
+                      v-model="role"
+                      outlined
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <div class="red--text" v-if="$store.state.errorMessage">
+                  {{ $store.state.errorMessage }}
+                </div>
+                <div>
+                  Already have an account?
+                  <v-btn
+                    depressed
+                    plain
+                    color="white"
+                    class="primary--text font-weight-medium"
+                    @click="
+                      $store.state.signUp = false;
+                      $store.state.errorMessage = '';
+                    "
+                    >Sign in</v-btn
+                  >
+                </div>
+              </v-container>
+              <v-card-actions class="justify-end">
+                <v-btn
+                  :loading="loading"
+                  text
+                  to="/User-Homepage"
+                  @click="createNewUser()"
+                  >Submit</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     <!-- Snackbar -->
@@ -256,14 +256,14 @@
 </template>
 
 <script>
-import db from "../firebase/firebaseInit";
+import UserService from "../services/userService";
 export default {
   name: "Login",
   data() {
     return {
       snackbar: false,
       show: false,
-      users: [],
+      loading: false,
 
       // login
       mail: "",
@@ -277,9 +277,12 @@ export default {
       birthDate: "",
       email: "",
       address: "",
+      role: "",
     };
   },
+  emit: ["login"],
   methods: {
+    // CLEAR ALL TEXTFIELDS METHOD
     clearTextFields() {
       this.fName = "";
       this.lName = "";
@@ -288,19 +291,53 @@ export default {
       this.birthDate = "";
       this.email = "";
       this.address = "";
+      (this.role = ""), (this.$store.state.errorMessage = "");
     },
-    login() {
-      if (this.mail != "" && this.password != null) {
-        let user = {
+    // LOGIN METHOD
+    async login() {
+      if (this.mail != "" && this.password != "") {
+        // setting the loading status to true
+        this.loading = true;
+        // create user object
+        const user = {
           email: this.mail,
           password: this.password,
         };
-        this.$store.commit("login", user);
+        const [login, loginErr] = await UserService.login(user);
+        if (!loginErr) {
+          localStorage.setItem("user", JSON.stringify(login.user));
+          localStorage.accessToken = login.accessToken;
+          localStorage.refreshToken = login.refreshToken;
+          const current = new Date();
+          const time = `${current.getHours()}-${current.getMinutes() +
+            5}-${current.getSeconds()}`;
+          localStorage.tokenPeriod = time;
+          this.$emit("login", false);
+          sessionStorage.loggedIn = true;
+        } else {
+          if (loginErr.response.data.message.email != "") {
+            this.$store.state.errorMessage =
+              loginErr.response.data.message.email;
+          } else if (
+            loginErr.response.data.message.email != "" &&
+            loginErr.response.data.message.password != ""
+          ) {
+            this.$store.state.errorMessage =
+              loginErr.response.data.message.email +
+              " / " +
+              loginErr.response.data.message.password;
+          } else {
+            this.$store.state.errorMessage =
+              loginErr.response.data.message.password;
+          }
+        }
+        this.loading = false;
       } else {
         this.snackbar = true;
       }
     },
-    createNewUser() {
+    // ADD USER METHOD
+    async createNewUser() {
       if (
         this.fName != "" &&
         this.lName != "" &&
@@ -308,8 +345,10 @@ export default {
         this.phoneNumber != "" &&
         this.birthDate != "" &&
         this.email != "" &&
-        this.address != ""
+        this.address != "" &&
+        this.role != ""
       ) {
+        this.loading = true;
         let user = {
           fName: this.fName,
           lName: this.lName,
@@ -318,36 +357,41 @@ export default {
           birthDate: this.birthDate,
           email: this.email,
           address: this.address,
+          role: this.role,
         };
-        this.$store.commit("addNewUser", user);
+
+        const [signup, error] = await UserService.addUser(user);
+        if (!error) {
+          localStorage.setItem("user", JSON.stringify(signup.user));
+          localStorage.accessToken = signup.accessToken;
+          localStorage.refreshToken = signup.refreshToken;
+          const current = new Date();
+          const time = `${current.getHours()}-${current.getMinutes() +
+            5}-${current.getSeconds()}`;
+          localStorage.tokenPeriod = time;
+          this.$emit("login", false);
+          sessionStorage.loggedIn = true;
+        } else {
+          this.$store.state.errorMessage = error.response.data.error;
+        }
       } else {
         this.snackbar = true;
       }
-      this.clearTextFields();
+      this.loading = false;
     },
-    loadData() {
-      this.users = [];
-      db.collection("users")
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            let user = {
-              id: doc.id,
-              userID: doc.data().userID,
-              fName: doc.data().fName,
-              lName: doc.data().lName,
-              email: doc.data().email,
-              password: doc.data().password,
-            };
-
-            this.$store.state.users.push(user);
-          });
-        });
+    yourCallBackFunction() {
+      console.log("hellow world");
     },
+  },
+  mounted() {
+    document.addEventListener("backbutton", this.yourCallBackFunction, false);
   },
   created() {
-    this.loadData();
+    this.$store.loginStatus = true;
+    this.clearTextFields();
   },
-  $emit: ["Login"],
+  beforeDestroy() {
+    document.removeEventListener("backbutton", this.yourCallBackFunction);
+  },
 };
 </script>

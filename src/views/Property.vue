@@ -1,42 +1,16 @@
 <template>
-  <div app>
-    <!-- Header -->
-    <v-container fluid id="dashHeader">
-      <v-row class="px-16 py-10" align="center" justify="center">
-        <v-col lg="6" md="6" sm="6" cols="12">
-          <v-row justify="center">
-            <v-col cols="12">
-              <span
-                class="text-xl-h2 text-lg-h3 text-md-h4 text-sm-h5 text-h5 white--text text--darken-4 font-weight-medium"
-                >PROPERTIES</span
-              >
-              <div
-                class="text-xl-h4 text-lg-h5 text-md-h6 text-sm-h7 text-h7 blue-grey--text text--darken-3 pt-5"
-              >
-                <v-icon color="blue-grey darken-4" large>mdi-home</v-icon>
-                Track all your properties
-              </div>
-              <div
-                class="text-xl-h4 text-lg-h5 text-md-h6 text-sm-h7 text-h7 blue-grey--text text--darken-3 pt-5"
-              >
-                <v-icon color="blue-grey darken-4" large>mdi-pencil</v-icon>
-                Manage and maintain your property
-              </div>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col xl="6" lg="6" md="6" sm="6" cols="12">
-          <v-row justify="center">
-            <v-img contain max-width="500" src="/dash.png"></v-img>
-          </v-row>
+  <div>
+    <v-container fluid>
+      <v-row class="pt-10 pl-10">
+        <v-col cols="12">
+          <span class="text-h6 blue-grey--text">AVAILABLE PROPERTIES</span>
         </v-col>
       </v-row>
     </v-container>
-    <v-container class="py-16">
-      <!-- Search bar and sort button -->
+    <v-container class="pb-10">
       <v-row>
         <!-- search bar -->
-        <v-col xl="10" lg="10" md="10" sm="9" cols="8">
+        <v-col cols="10">
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -48,14 +22,7 @@
           ></v-text-field>
         </v-col>
         <!--Sort by type -->
-        <v-col
-          xl="2"
-          lg="2"
-          md="2"
-          sm="3"
-          cols="4"
-          class="align-end d-flex flex-column"
-        >
+        <v-col cols="2" class="align-end d-flex flex-column">
           <v-menu open-on-hover offset-y top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn depressed color="white" v-bind="attrs" v-on="on">
@@ -74,31 +41,18 @@
             </v-list>
           </v-menu>
         </v-col>
-        <v-col v-if="!exist" cols="12">
-          <v-row align="center" justify="center">
-            <span class="text-h5 py-10 blue-grey--text"
-              >No data were found</span
-            >
-          </v-row>
-        </v-col>
       </v-row>
-      <!-- Rented properties row info -->
-      <v-row v-for="property in filteredProperties" :key="property._id">
-        <v-col class="grey lighten-2" xl="6" lg="6" md="6" sm="12" cols="12">
+      <!-- Property rows infor -->
+      <v-row v-for="property in filteredProperties" :key="property.id">
+        <!-- Outside -->
+        <v-col class="blue-grey lighten-4" lg="6" md="6" sm="12" cols="12">
           <v-img
             max-height="300"
             max-width="1000"
             :src="property.images[0]"
           ></v-img
         ></v-col>
-        <v-col
-          class="grey lighten-4 pa-6"
-          xl="6"
-          lg="6"
-          md="6"
-          sm="12"
-          cols="12"
-        >
+        <v-col class="grey lighten-4 pa-6" lg="6" md="6" sm="12" cols="12">
           <v-row>
             <v-col class="font-weight-bold pt-6 text-h6">
               {{ property.name }}
@@ -106,18 +60,18 @@
           </v-row>
           <v-row>
             <v-col cols="6">
-              <v-icon small color="blue darken-2"> mdi-map-marker </v-icon>
-              {{ property.area }}
+              <v-icon small color="blue darken-2"> mdi-account</v-icon>
+              {{ property.user.fName }} {{ property.user.lName }}
             </v-col>
             <v-col cols="6">
-              <v-icon small color="blue darken-2"> mdi-sofa-single </v-icon>
-              {{ property.furnish }}
+              <v-icon small color="blue darken-2"> mdi-phone</v-icon>
+              {{ property.ownerPhoneNumber }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="6">
-              <v-icon small color="blue darken-2"> mdi-cellphone</v-icon>
-              {{ property.ownerPhoneNumber }}
+              <v-icon small color="blue darken-2"> mdi-map-marker </v-icon>
+              {{ property.area }}
             </v-col>
             <v-col cols="6" class="font-weight-medium green--text text--darken">
               <v-icon small color="blue darken-2"> mdi-cash-multiple</v-icon>
@@ -125,20 +79,15 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" align="center" justify="center" class="mt-10">
-              <v-dialog
-                transition="dialog-bottom-transition"
-                max-width="1000"
-                v-if="edit == false"
-              >
+            <v-col cols="12" align="center" justify="center" class="mt-6">
+              <v-dialog transition="dialog-bottom-transition" max-width="1000">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     depressed
                     block
                     tile
-                    height="50"
-                    color="blue-grey darken-3"
-                    class="white--text"
+                    color="blue lighten-2"
+                    class="py-8 white--text"
                     v-bind="attrs"
                     v-on="on"
                     >Show Details</v-btn
@@ -146,61 +95,16 @@
                 </template>
                 <template v-slot:default="dialog">
                   <v-card>
-                    <v-toolbar flat color="blue-grey darken-3" dark
-                      >Property Details
-                      <v-spacer></v-spacer>
-                      <v-toolbar-items>
-                        <!-- Edit Property Section -->
-                        <EditProperty
-                          @loadData="load"
-                          :propertyDetails="{
-                            id: property._id,
-                            ownerID: property.ownerID,
-                            name: property.name,
-                            type: property.type,
-                            furnish: property.furnish,
-                            bedrooms: property.bedrooms,
-                            livingrooms: property.livingrooms,
-                            bathrooms: property.bathrooms,
-                            kitchen: property.kitchen,
-                            parking: property.parking,
-                            balcony: property.balcony,
-                            size: property.size,
-                            area: property.area,
-                            price: property.price,
-                            ownerPhoneNumber: property.ownerPhoneNumber,
-                            description: property.description,
-                            images: property.images,
-                          }"
-                        />
-                      </v-toolbar-items>
-                      <!-- delete property -->
-                      <v-toolbar-items>
-                        <v-btn
-                          depressed
-                          block
-                          tile
-                          height="50"
-                          color="blue-grey darken-3"
-                          class="white--text"
-                          :loading="deleteLoading"
-                          @click="
-                            deleteProperty(property._id),
-                              (dialog.value = dialogStatus)
-                          "
-                          >Delete</v-btn
-                        >
-                      </v-toolbar-items>
-                    </v-toolbar>
-                    <!-- Property Details Card -->
+                    <v-toolbar flat color="blue lighten-1" dark
+                      >Property Details</v-toolbar
+                    >
                     <v-card-text>
                       <div class="text-h5 pa-6 font-weight-medium">
                         {{ property.name }}
                       </div>
-                      <!-- property images -->
                       <v-container>
                         <v-row>
-                          <v-col>
+                          <v-col cols="12">
                             <v-carousel hide-delimiters>
                               <v-carousel-item
                                 v-for="pic in property.images"
@@ -214,10 +118,7 @@
                         </v-row>
                       </v-container>
                       <v-divider></v-divider>
-                      <!-- property info -->
-                      <v-container
-                        class="pa-5 text-h6 blue-grey--text text--darken-1"
-                      >
+                      <v-container class="pa-5">
                         <v-row
                           class="
                               text-lg-h6
@@ -229,19 +130,26 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property type -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-home</v-icon>
-                            <span class="grey--text"> Property Type:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Property Type:</span
+                            >
                             {{ property.type }}
                           </v-col>
-                          <!-- property furnish -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-sofa-single</v-icon>
-                            <span class="grey--text"> Furnished: </span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Furnished:
+                            </span>
                             {{ property.furnish }}
                           </v-col>
                         </v-row>
+                        <!-- bedroom and living room -->
                         <v-row
                           class="
                               text-lg-h6
@@ -253,19 +161,26 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property bedroom -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-bed-king</v-icon>
-                            <span class="grey--text"> Bedroom:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Bedroom:</span
+                            >
                             {{ property.bedrooms }}
                           </v-col>
-                          <!-- property livingroom -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-sofa</v-icon>
-                            <span class="grey--text"> Livingroom:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Livingroom:</span
+                            >
                             {{ property.livingrooms }}
                           </v-col>
                         </v-row>
+                        <!-- bathroom and kitchen -->
                         <v-row
                           class="
                               text-lg-h6
@@ -277,19 +192,26 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property bathroom -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-toilet</v-icon>
-                            <span class="grey--text"> Bathroom:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Bathroom:</span
+                            >
                             {{ property.bathrooms }}
                           </v-col>
-                          <!-- property kitchen -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-stove</v-icon>
-                            <span class="grey--text"> Kitchen:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Kitchen:</span
+                            >
                             {{ property.kitchen }}
                           </v-col>
                         </v-row>
+                        <!-- parking and balcony -->
                         <v-row
                           class="
                               text-lg-h6
@@ -301,19 +223,26 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property parking -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-car-back</v-icon>
-                            <span class="grey--text"> Parking:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Parking:</span
+                            >
                             {{ property.parking }}
                           </v-col>
-                          <!-- property balcony -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-window-closed-variant</v-icon>
-                            <span class="grey--text"> Balcony:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Balcony:</span
+                            >
                             {{ property.balcony }}
                           </v-col>
                         </v-row>
+                        <!-- size and area -->
                         <v-row
                           class="
                               text-lg-h6
@@ -325,19 +254,26 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property size -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-arrow-split-vertical</v-icon>
-                            <span class="grey--text"> Size:</span>
-                            {{ property.size }} ft
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Size:</span
+                            >
+                            {{ property.size }}
                           </v-col>
-                          <!-- property location -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-map-marker</v-icon>
-                            <span class="grey--text"> Location:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Location:</span
+                            >
                             {{ property.area }}
                           </v-col>
                         </v-row>
+                        <!-- price and phone number -->
                         <v-row
                           class="
                               text-lg-h6
@@ -349,19 +285,28 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property price -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-cash-multiple</v-icon>
-                            <span class="grey--text"> Price:</span>
-                            {{ property.price }} BHD / MONTHLY
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Price:</span
+                            >
+                            <span class="green--text font-weight-medium"
+                              >{{ property.price }} BHD / MONTHLY</span
+                            >
                           </v-col>
-                          <!-- owner phone number -->
                           <v-col lg="6" md="6" sm="6" cols="12">
                             <v-icon>mdi-cellphone</v-icon>
-                            <span class="grey--text"> Phone Number:</span>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Phone Number:</span
+                            >
                             {{ property.ownerPhoneNumber }}
                           </v-col>
                         </v-row>
+                        <!-- Owner Information -->
                         <v-row
                           class="
                               text-lg-h6
@@ -373,39 +318,103 @@
                               font-weight-regular
                             "
                         >
-                          <!-- property description -->
-                          <v-col cols="12" class="grey--text">
+                          <v-col lg="6" md="6" sm="6" cols="12">
+                            <v-icon>mdi-account</v-icon>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Owner Name:</span
+                            >
+                            {{ property.user.fName }}
+                            {{ property.user.lName }}
+                          </v-col>
+                          <v-col lg="6" md="6" sm="6" cols="12">
+                            <v-icon>mdi-calendar</v-icon>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Birth Date:</span
+                            >
+                            {{ property.user.birthDate }}
+                          </v-col>
+                        </v-row>
+                        <v-row
+                          class="
+                              text-lg-h6
+                              text-md-h6
+                              text-sm-subtitle-1
+                              text-subtitle-1
+                              blue--text
+                              lighten-1
+                              font-weight-regular
+                            "
+                        >
+                          <v-col lg="6" md="6" sm="6" cols="12">
+                            <v-icon>mdi-email</v-icon>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Email:</span
+                            >
+                            {{ property.user.email }}
+                          </v-col>
+                          <v-col lg="6" md="6" sm="6" cols="12">
+                            <v-icon>mdi-map-marker-outline</v-icon>
+                            <span
+                              class="grey--text text--darken-2 font-weight-bold"
+                            >
+                              Address:</span
+                            >
+                            {{ property.user.address }}
+                          </v-col>
+                        </v-row>
+                        <!-- Description -->
+                        <v-row
+                          class="
+                              text-lg-h6
+                              text-md-h6
+                              text-sm-subtitle-1
+                              text-subtitle-1
+                              font-weight-regular
+                            "
+                        >
+                          <v-col
+                            cols="12"
+                            class="grey--text text--darken-2 font-weight-bold"
+                          >
                             <v-icon>mdi-information-variant</v-icon>
                             Description:
                           </v-col>
-                          <v-col class="text-subtitle-1">
+                          <v-col class="blue--text lighten-1 text-subtitle-1">
                             {{ property.description }}
                           </v-col>
                         </v-row>
-                        <!-- Calendar: reservation dates -->
+                        <!-- Calendar -->
                         <v-row
                           class="
                               text-lg-h6
                               text-md-h6
                               text-sm-subtitle-1
                               text-subtitle-1
-                              blue--text
-                              lighten-1
                               font-weight-regular
                             "
                         >
-                          <v-col cols="12" class="grey--text">
-                            <v-icon>mdi-calendar</v-icon>
-                            Reserved Months:
+                          <v-col
+                            cols="12"
+                            class="grey--text text--darken-2 font-weight-bold"
+                          >
+                            <v-icon>mdi-calendar-range</v-icon>
+                            Booked Months:
                           </v-col>
+                          <!-- Calendar -->
                           <v-col cols="12">
                             <v-date-picker
+                              readonly
+                              multiple
+                              full-width
                               v-model="property.reservedDates"
                               type="month"
-                              multiple
-                              color="blue-grey lighten-1"
-                              full-width
-                              readonly
+                              color="blue lighten-1"
                             ></v-date-picker>
                           </v-col>
                         </v-row>
@@ -413,7 +422,7 @@
                     </v-card-text>
                     <v-card-actions class="justify-end">
                       <v-btn
-                        class="blue-grey--text text--darken-3"
+                        class="blue--text text--lighten-1"
                         text
                         @click="dialog.value = false"
                         >Close</v-btn
@@ -431,63 +440,19 @@
 </template>
 
 <script>
-import EditProperty from "../components/EditProperty.vue";
 import PropertyService from "../services/propertyService";
 export default {
-  name: "RentedProperties",
-  components: {
-    EditProperty,
-  },
+  name: "Property",
+  components: {},
   data() {
     return {
-      exist: true,
-      deleteLoading: false,
+      propertyID: "",
       properties: [],
-      edit: false,
-      dialogStatus: true,
+      sortBy: [{ type: "price" }, { type: "size" }, { type: "area" }],
       search: "",
-      sortBy: [
-        { type: "price" },
-        { type: "size" },
-        { type: "location" },
-        { type: "type" },
-        { type: "rooms" },
-      ],
     };
   },
   methods: {
-    // change the status of the dialog
-    load(value) {
-      if (value) {
-        this.loadData();
-      }
-    },
-    // load the user properties
-    async loadData() {
-      this.exist = true; //reset value
-      let user = JSON.parse(localStorage.user);
-      try {
-        const properties = await PropertyService.getUserProperties(user._id);
-        this.properties = properties.properties;
-        if (this.properties == "") {
-          this.exist = false;
-        }
-      } catch (err) {
-        console.log(err.message);
-      }
-    },
-    // delete a property
-    async deleteProperty(id) {
-      try {
-        this.deleteLoading = true;
-        await PropertyService.deleteProperty(id);
-        await this.loadData();
-        this.deleteLoading = false;
-        this.dialogStatus = false;
-      } catch (err) {
-        console.log(err.message);
-      }
-    },
     sortByType(type) {
       if (type == "area") {
         this.properties.sort((a, b) => (a[type] < b[type] ? -1 : 1));
@@ -495,12 +460,6 @@ export default {
         this.properties.sort((a, b) => (a[type] < b[type] ? -1 : 1));
       } else if (type == "price") {
         this.properties.sort((a, b) => (a[type] < b[type] ? -1 : 1));
-      } else if (type == "type") {
-        this.properties.sort((a, b) => (a[type] < b[type] ? -1 : 1));
-      } else if (type == "rooms") {
-        this.properties.sort((a, b) =>
-          a["bedrooms"] < b["bedrooms"] ? -1 : 1
-        );
       }
     },
   },
@@ -512,15 +471,14 @@ export default {
     },
   },
   async created() {
-    await this.loadData();
-    console.log(this.properties);
+    try {
+      let properties = await PropertyService.getPropertiesWithOwner();
+      this.properties = properties.properties;
+    } catch (err) {
+      console.log(err.message);
+    }
   },
 };
 </script>
 
-<style>
-#dashHeader {
-  background-image: url("/dashBackground.gif");
-  background-size: cover;
-}
-</style>
+<style scoped></style>
